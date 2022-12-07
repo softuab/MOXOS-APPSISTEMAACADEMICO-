@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!--
+ * @autor FAUTAPO
+ * @fec_registro 2005-11-01
+ * @ult_usuario FAUTAPO
+ * @fec_modificacion 2005-11-01
+-->
+
+<sqlMap namespace="Nota">
+
+    <!-- cambiar notas no matriculadas-->
+    <resultMap id="nomatriculados" class="org.fautapo.domain.Notas">
+        <result property="id_estado" column="id_estado"/>
+    </resultMap>
+  
+    <select id="getMtcMoverNoMatriculados" resultMap="nomatriculados">
+        SELECT * FROM mi_mtc_mover_nomatriculados(#gestion#, #periodo#) AS (id_estado integer);
+    </select>
+  
+    <select id="getMtcMoverMatriculados" resultMap="nomatriculados">
+        SELECT * FROM mi_mtc_mover_matriculados(#gestion#, #periodo#) AS (id_estado integer);
+    </select>
+    <!-- Fin  cambiar notas no matriculadas-->
+    <!--Reporte Acta de calificaciones-->
+    <resultMap id="actaCalificaciones" class="org.fautapo.domain.Notas">
+        <result property="id_matricula"   column="id_matricula"/>
+        <result property="id_estudiante"   column="id_estudiante"/>
+        <result property="nombres"        column="nombres"/>
+        <result property="nota"           column="nota"/>
+    </resultMap>
+  
+    <select id="getListarActaCalificaciones" resultMap="actaCalificaciones">
+        SELECT * FROM listar_nota_final_matriculas(#id_materia#, #id_grupo#, #gestion#, #periodo#) 
+        AS (id_estudiante dentero, id_matricula integer, nombres text, nota integer);
+    </select>
+    <!--Fin Reporte Acta de calificaciones-->
+  
+    <!--Reporte Actas de PRe-Cierre-->
+    <resultMap id="datosActa" class="org.fautapo.domain.Notas">
+        <result property="id_matricula"   column="id_matricula"/>
+        <result property="id_estudiante"   column="id_estudiante"/>
+        <result property="nombres"        column="nombres"/>
+        <result property="nota"           column="nota"/>
+    </resultMap>
+  
+    <select id="getListarActaCalificacionesPreCierre" resultMap="datosActa">
+        SELECT * 
+        FROM  mi_listar_notas_pre_cierre_matriculas(#id_materia#, #id_grupo#, #gestion#, #periodo#, #id_tipo_evaluacion#, #id_departamento#, #id_modelo_ahorro#)
+        AS (id_estudiante dentero, id_matricula integer, nombres text, nota numeric);
+    </select>
+    <!--Fin Reporte Acta de PRe-Cierre-->
+
+    <!--Reporte Actas de Por fase-->
+    <select id="getListarActaCalificacionesPorFase" resultMap="datosActa">
+        SELECT *
+        FROM  mi_listar_notas_fases_calculadas_matriculas(#id_materia#, #id_grupo#, #gestion#, #periodo#, #id_tipo_evaluacion#, #id_departamento#, #id_modelo_ahorro#, #id_fase#)
+        AS (id_estudiante dentero, id_matricula integer, nombres text, nota numeric);
+    </select>
+    <!--Fin Reporte Acta de Por fase-->
+
+    <!--INICIO - Imprimir Certificado de Notas-->
+    <resultMap id="datosNotas" class="org.fautapo.domain.Libretas">
+        <result property="id_nota"          column="id_nota"/>
+        <result property="id_materia"       column="id_materia"/>
+        <result property="gestion"          column="gestion"/>
+        <result property="periodo"          column="periodo"/>	    
+        <result property="hrs_periodo"      column="hrs_periodo"/>
+        <result property="nivel_academico"  column="nivel_academico"/>   
+        <!--<result property="tipo_evaluacion"  column="tipo_evaluacion"/>  -->
+        <result property="sigla"            column="sigla"/>
+        <result property="materia"          column="materia"/>
+        <result property="nota"             column="nota"/>
+        <!--<result property="id_estado"        column="id_estado"/>
+        <result property="estado"           column="estado"/>-->
+    </resultMap>
+  
+    <select id="getListarCertificadoNotasTodas" resultMap="datosNotas"> 
+        SELECT * FROM mi_listar_certificado_notas_todas(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer);
+    </select>
+
+    <select id="getListarCertificadoNotasNivel" resultMap="datosNotas">
+        SELECT *
+        FROM mi_listar_certificado_notas_nivel(#id_estudiante#, #gestion#, #periodo#,#cantidad#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer);
+    </select>
+ 
+    <select id="getListarCertificadoNotasAprobadas" resultMap="datosNotas">
+        SELECT *
+        FROM mi_listar_certificado_notas_aprobadas(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer);
+    </select>
+
+    <!--FIN - Imprimir Certificado de Notas-->
+
+    <!--INICIO 2- Imprimir Certificado de Notas-->
+
+    <resultMap id="datosNotas2" class="org.fautapo.domain.Libretas">
+        <result property="id_nota"          column="id_nota"/>
+        <result property="id_materia"       column="id_materia"/>
+        <result property="gestion"          column="gestion"/>
+        <result property="periodo"          column="periodo"/>	    
+        <result property="hrs_periodo"      column="hrs_periodo"/>
+        <result property="nivel_academico"  column="nivel_academico"/>   
+        <result property="tipo_evaluacion"  column="tipo_evaluacion"/>  
+        <result property="sigla"            column="sigla"/>
+        <result property="materia"          column="materia"/>
+        <result property="nota"             column="nota"/>
+    </resultMap>
+
+    <select id="getListarCertificadoNotasTodas2" resultMap="datosNotas2">
+        SELECT * FROM mi_listar_certificado_notas_todas2(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer,tipo_evaluacion text);
+    </select>
+
+    <select id="getListarCertificadoNotasAprobadas2" resultMap="datosNotas2">
+        SELECT * FROM mi_listar_certificado_notas_aprobadas2(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer,tipo_evaluacion text);
+    </select>
+    <!--INICIO 2- Imprimir Certificado de Notas CON ESTADO-->
+
+    <resultMap id="datosNotas3" class="org.fautapo.domain.Libretas">
+        <result property="id_nota"          column="id_nota"/>
+        <result property="id_materia"       column="id_materia"/>
+        <result property="gestion"          column="gestion"/>
+        <result property="periodo"          column="periodo"/>	    
+        <result property="hrs_periodo"      column="hrs_periodo"/>
+        <result property="nivel_academico"  column="nivel_academico"/>   
+        <result property="tipo_evaluacion"  column="tipo_evaluacion"/>  
+        <result property="sigla"            column="sigla"/>
+        <result property="materia"          column="materia"/>
+        <result property="nota"             column="nota"/>
+        <result property="id_estado"             column="id_estado"/>
+    </resultMap>
+
+    <select id="getListarCertificadoNotasTodas3" resultMap="datosNotas3">
+        SELECT * FROM mi_listar_certificado_notas_todas3(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer,tipo_evaluacion text,id_estado text);
+    </select>
+
+    <select id="getListarCertificadoNotasAprobadas3" resultMap="datosNotas3">
+        SELECT * FROM mi_listar_certificado_notas_aprobadas3(#id_estudiante#, #gestion#, #periodo#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer,tipo_evaluacion text, id_estado text);
+    </select>
+		
+    <resultMap id="datosNotas4" class="org.fautapo.domain.Libretas">
+        <result property="id_nota"          column="id_nota"/>
+        <result property="id_materia"       column="id_materia"/>
+        <result property="gestion"          column="gestion"/>
+        <result property="periodo"          column="periodo"/>	    
+        <result property="hrs_periodo"      column="hrs_periodo"/>
+        <result property="nivel_academico"  column="nivel_academico"/>   
+        <result property="tipo_evaluacion"  column="tipo_evaluacion"/>  
+        <result property="sigla"            column="sigla"/>
+        <result property="materia"          column="materia"/>
+        <result property="nota"             column="nota"/>
+        <result property="id_tipo_materia"       column="id_tipo_materia"/>
+    </resultMap>
+
+		
+    <select id="getListarHistorialAcademico" resultMap="datosNotas4">
+        SELECT * FROM mi_listar_historial_academico(#id_estudiante#, #gestion#, #periodo#)
+        AS (
+        nivel_academico dentero, 
+        id_materia dentero, 
+        sigla dtexto, 
+        materia dtexto, 
+        hrs_periodo dentero2,
+        gestion integer,
+        periodo integer,
+        id_nota integer, 
+        nota integer ,
+        tipo_evaluacion dtexto2, 
+        id_tipo_materia dentero );
+    </select>
+    <!--FIN 2- Imprimir Certificado de Notas-->
+    <!--INICIO 2- Imprimir Certificado de Notas
+
+    <resultMap id="datosNotas2" class="org.fautapo.domain.Libretas">
+    <result property="id_matricula" column="id_matricula"/>
+    <result property="id_estudiante" column="id_estudiante"/>
+    <result property="nivel_academico" column="nivel_academico"/>
+    <result property="sigla" column="sigla"/>
+    <result property="materia" column="materia"/>
+    <result property="tipo_evaluacion" column="tipo_evaluacion"/>
+    <result property="nota" column="nota"/>
+    <result property="id_estado" column="id_estado"/>
+    <result property="estado" column="estado"/>
+    </resultMap>
+
+    <select id="getListarCertificadoNotasTodas2" resultMap="datosNotas2">
+      SELECT *  FROM mi_listar_certificado_notas_todas2(#id_estudiante#, #gestion#, #periodo#)
+       AS (id_estudiante dentero, id_matricula integer, nivel_academico dentero, sigla dtexto, materia dtexto, 
+       tipo_evaluacion dtexto,nota dentero2, id_estado did_estado, estado dtexto);
+    </select>
+
+    <select id="getListarCertificadoNotasAprobadas2" resultMap="datosNotas2">
+       SELECT *    FROM mi_listar_certificado_notas_aprobadas2(#id_estudiante#, #gestion#, #periodo#)
+       AS (id_estudiante dentero, id_matricula integer, nivel_academico dentero, sigla dtexto, materia dtexto, 
+      tipo_evaluacion dtexto, nota dentero2, id_estado did_estado, estado dtexto);  
+    </select>-->
+    <!--FIN 2- Imprimir Certificado de Notas-->
+
+
+
+
+
+    <!-- INICIO - Rectificacion de notas -->
+    <resultMap id="datosNotasRectificar" class="org.fautapo.domain.Notas">
+        <result property="id_nota"            column="id_nota"/>
+        <result property="id_matricula"       column="id_matricula"/>
+        <result property="id_tipo_evaluacion" column="id_tipo_evaluacion"/>
+        <result property="tipo_evaluacion"    column="tipo_evaluacion"/>
+        <result property="id_materia"         column="id_materia"/>
+        <result property="id_grupo"           column="id_grupo"/>
+        <result property="gestion"            column="gestion"/>
+        <result property="periodo"            column="periodo"/>
+        <result property="grupo"              column="grupo"/>
+        <result property="sigla"              column="sigla"/>
+        <result property="materia"            column="materia"/>
+        <result property="nota"               column="nota"/>
+        <result property="observacion"        column="observacion"/>
+        <result property="rectificado"        column="rectificado"/>
+    </resultMap>
+  
+    <select id="getListarNotasRectificar" resultMap="datosNotasRectificar">
+        SELECT * FROM mi_listar_notas_rectificar(#id_estudiante#, #gestion#, #periodo#)
+        AS (id_nota integer, id_matricula dentero, id_tipo_evaluacion dentero, tipo_evaluacion dtexto, id_materia dentero, gestion dentero, periodo dentero, 
+        id_grupo dentero, grupo dtexto, sigla dtexto, materia dtexto, nota dentero2, observacion dtexto2, rectificado dbooleano2);
+    </select>
+
+    <resultMap id="datosNota" class="org.fautapo.domain.Notas">
+        <result property="id_nota"            column="id_nota"/>
+        <result property="id_matricula"       column="id_matricula"/>
+        <result property="id_estudiante"      column="id_estudiante"/>
+        <result property="id_materia"         column="id_materia"/>
+        <result property="id_grupo"           column="id_grupo"/>
+        <result property="id_convalidacion"   column="id_convalidacion"/>
+        <result property="id_tipo_evaluacion" column="id_tipo_evaluacion"/>
+        <result property="id_estado"          column="id_estado"/>
+        <result property="gestion"            column="gestion"/>
+        <result property="periodo"            column="periodo"/>
+        <result property="nota"               column="nota"/>
+        <result property="folio"              column="folio"/>
+        <result property="libro"              column="libro"/>
+        <result property="observacion"        column="observacion"/>
+        <result property="rectificado"        column="rectificado"/>
+        <result property="fec_registro"       column="fec_registro"/>
+        <result property="fec_modificacion"   column="fec_modificacion"/>
+        <result property="ult_usuario"        column="ult_usuario"/>
+    </resultMap>
+  
+    <select id="getBuscarNota" resultMap="datosNota">
+        SELECT * FROM mi_buscar_nota(#id_nota#)
+    </select>
+  
+    <select id="setRegistrarRectificacion" resultClass="java.lang.Integer">
+        SELECT mi_registrar_rectificacion(#id_estudiante#, #id_matricula#, #id_tipo_evaluacion#, #id_materia#, #id_grupo#, #gestion#, #periodo#, #id_nota#, #nota#, #observacion#, #ult_usuario#) as valor;
+    </select>
+
+    <select id="setRegistrarRectificacionNota" resultClass="java.lang.Integer">
+        SELECT mi_registrar_notas_modificar(#gestion#, #periodo#, #id_nota#, #nota#, #observacion#, #id_tipo_evaluacion#, #id_estado#, #id_rol#, #ult_usuario#) as valor;
+    </select>
+
+    <!-- FIN - Rectificacion de notas -->
+
+    <!-- INICIO - Historial Academico -->
+    <resultMap id="datosMaterias" class="org.fautapo.domain.Notas">
+        <result property="gestion"         column="gestion"/>
+        <result property="periodo"         column="periodo"/>
+        <result property="nivel_academico" column="nivel_academico"/>
+        <result property="id_materia"      column="id_materia"/>
+        <result property="sigla"           column="sigla"/>
+        <result property="materia"         column="materia"/>
+        <result property="hrs_periodo"     column="hrs_periodo"/>
+        <result property="id_nota"         column="id_nota"/>
+        <result property="nota"            column="nota"/>
+    </resultMap>
+
+    <select id="getListarPlanMateriasNotas" resultMap="datosMaterias">
+        SELECT * FROM mi_listar_plan_materias_aprobadas_nota(#id_estudiante#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer );
+    </select>
+
+    <select id="getBuscarPromedioDeNotas" resultClass="java.lang.Double">
+        SELECT mi_buscar_promedio_notas(#id_estudiante#) as valor;
+    </select>
+  
+    <select id="getCantidadMateriasAprobadas" resultClass="java.lang.Integer">
+        SELECT count(*) as valor 
+        FROM mi_listar_materias_aprobadas_nota(#id_estudiante#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer);
+    </select>
+    <!-- FIN - Historial Academico -->
+  
+  
+  
+  
+    <resultMap id="datosMaterias2" class="org.fautapo.domain.Notas">
+        <result property="gestion"         column="gestion"/>
+        <result property="periodo"         column="periodo"/>
+        <result property="nivel_academico" column="nivel_academico"/>
+        <result property="id_materia"      column="id_materia"/>
+        <result property="sigla"           column="sigla"/>
+        <result property="materia"         column="materia"/>
+        <result property="hrs_periodo"     column="hrs_periodo"/>
+        <result property="id_nota"         column="id_nota"/>
+        <result property="nota"            column="nota"/>
+        <result property="tipo_evaluacion" column="tipo_evaluacion"/>
+    </resultMap>
+
+    <select id="getListarPlanMateriasNotas2" resultMap="datosMaterias2">
+        SELECT * FROM mi_listar_plan_materias_aprobadas_nota2(#id_estudiante#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer , tipo_evaluacion dtexto2);
+    </select>
+    <resultMap id="datosMaterias3" class="org.fautapo.domain.Notas">
+        <result property="gestion"         column="gestion"/>
+        <result property="periodo"         column="periodo"/>
+        <result property="nivel_academico" column="nivel_academico"/>
+        <result property="id_materia"      column="id_materia"/>
+        <result property="sigla"           column="sigla"/>
+        <result property="materia"         column="materia"/>
+        <result property="hrs_periodo"     column="hrs_periodo"/>
+        <result property="id_nota"         column="id_nota"/>
+        <result property="nota"            column="nota"/>
+        <result property="tipo_evaluacion" column="tipo_evaluacion"/>
+        <result property="id_tipo_materia" column="id_tipo_materia"/>
+    </resultMap>
+
+    <select id="getListarPlanMateriasNotas3" resultMap="datosMaterias3">
+        SELECT * FROM mi_listar_plan_materias_aprobadas_nota3(#id_estudiante#)
+        AS (nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, hrs_periodo dentero2, gestion integer, periodo integer, 
+        id_nota integer, nota integer , tipo_evaluacion dtexto2, id_tipo_materia dentero );
+    </select>
+  
+    <resultMap id="datosFichaAcademicaBuscar" class="org.fautapo.domain.Notas">
+        <result property="gestion"         column="gestion"/>
+        <result property="periodo"         column="periodo"/>
+        <result property="id_plan"         column="id_plan"/>
+        <result property="nivel_academico" column="nivel_academico"/>
+        <result property="id_materia"      column="id_materia"/>
+        <result property="sigla"           column="sigla"/>    
+        <result property="materia"         column="materia"/>
+        <result property="nota"            column="nota"/>
+        <result property="id_estado"       column="id_estado"/>
+        <result property="estado"          column="estado"/>
+        <result property="observacion"     column="observacion"/> 
+        <result property="tipo_evaluacion" column="tipo_evaluacion"/>
+        <result property="id_nota"          column="id_nota"/>  
+    </resultMap>
+   
+    <select id="getEstListarFichaAcademicaBuscar" resultMap="datosFichaAcademicaBuscar">
+        SELECT distinct * FROM mi_est_listar_ficha_academica_buscar(#id_nota#)
+        AS (id_nota integer,gestion integer, periodo integer, id_plan dtexto, nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, 
+        nota integer, id_estado text,  observacion text,tipo_evaluacion text, estado dtexto);	 
+    </select>
+    <select id="getEstListarFichaAcademicaBuscarBuscarAnulada" resultMap="datosFichaAcademicaBuscar">
+        SELECT * FROM mi_est_listar_ficha_academica_buscar_anulada(#id_nota#)
+        AS (id_nota integer,gestion integer, periodo integer, id_plan dtexto, nivel_academico dentero, id_materia dentero, sigla dtexto, materia dtexto, 
+        nota integer, id_estado text,  observacion text,tipo_evaluacion text, estado dtexto);	 
+    </select>
+    <resultMap id="datosPromedioNotas" class="org.fautapo.domain.Notas">
+        <result property="facultad"         column="facultad"/>
+        <result property="programa"         column="programa"/>
+        <result property="id_programa" column="id_programa"/>
+        <result property="id_estudiante"      column="id_estudiante"/>
+        <result property="id_plan"           column="id_plan"/>
+        <result property="nombre_completo"         column="nombre_completo"/>
+        <result property="sumMaterias"     column="sumMaterias"/>
+        <result property="cantidad"         column="cantidad"/>
+        <result property="promedionota"            column="promedionota"/>
+        <result property="anios"            column="anios"/>
+        <result property="total_anios"            column="total_anios"/>
+        <result property="gestion"            column="gestion"/>
+        <result property="cantidadreprobado"            column="cantidadreprobado"/>
+    </resultMap>
+    <select id="getListaMayoresa80SinModalidad" resultMap="datosPromedioNotas">
+        SELECT 
+        f.facultad, 
+        fp.programa, 
+        fp.id_programa, 
+        e.id_estudiante, 
+        e.id_plan,
+        case when get_anios_programa(fp.id_programa)=0 then plan.nivel/2 else plan.nivel end  as anios,
+        #gestion#-(g.gestion-1) as total_anios,
+        g.gestion,
+        p.paterno || ' '|| p.materno || ' '|| p.nombres as nombre_completo,
+        notas.sumMaterias,
+        plan.cantidad,
+        case when notas.sumMaterias=0 then 0 else round(notas.sumMaterias/ plan.cantidad) end as promedionota,
+        get_cantidad_reprobadas(e.id_estudiante) as cantidadreprobado
+        FROM 
+        facultades f inner join fcl_programas fp on f.id_facultad = fp.id_facultad
+        inner join estudiantes e on fp.id_programa = e.id_programa
+        inner join public.personas p on e.id_persona = p.id_persona
+        inner join public.matriculas m on e.id_estudiante = m.id_estudiante
+        inner join gestion g on e.id_estudiante = g.id_estudiante
+        inner join (SELECT id_programa,id_plan, count(id_materia) as cantidad,max(mp.nivel_academico) as nivel FROM public.mtr_planes mp WHERE  mp.id_estado = 'A' AND mp.id_materia=mp.id_materia_ant AND mp.id_materia not in (108,2995,2993,2994,875,876,877,878,1027,1028,1180,1181,874,254,5351,672,354,1212,607,1276,1710,51,1532,1533,5111,1605,5195,1965,565,698,2008,1606,1607,1608,1609,1610,2991,2236,2316,2349,2397,2462,2431,3469,2619,2676,2717,2944,2765,2832,3029,2078,2051,3115,5231,5158,3565,4938,3619,3656,5010,4130,4005,4089,4191,4204,4974,5070,4816,4276,4303,4342,4796,4442,4457,4474,564,563,4530,4533,562,4853,4897,4690,4731,5592,1741,2186,2191,2190,2187,2188,5511,5515,5628,6008,5369,5647,5648,2500,725,5646,2813,5666,3563,5121,4176,5718,5736,1244,2189,5808,5828,4496,5891,4360,3150,3168,5936,5940,5973,509,4473,4241,1129,973,2578,2540,6152,1947,1948,1950,1949,1951,5809,6346,6349,6397,6400,6420,6421,6422,4161,1677,309,6484,6438,5855,5873,6541,6542,6574,2897,6683,6684,6715,6747,6830,6831,6878,6944,6980,7106,7061,7164,7198,7250,4906,6653,4340,7279,7300,7329,7402,4378,4396,5249,6781,7500,7538)
+        group by id_programa,id_plan) plan on e.id_programa=plan.id_programa and e.id_plan=plan.id_plan
+        inner join (
+        SELECT 
+        mp.id_programa,
+        n.id_estudiante,
+        mp.id_plan, 
+        sum(n.nota) as sumMaterias 
+        FROM materia_planes mp 
+        inner join notas n on mp.id_materia = n.id_materia 
+        WHERE n.id_estado IN ('A','C')
+        group by mp.id_programa, 
+        n.id_estudiante, mp.id_plan) notas on e.id_estudiante=notas.id_estudiante and e.id_plan=notas.id_plan
+        WHERE m.id_estado = 'A' AND m.gestion = #gestion# AND m.periodo=#periodo# AND f.codigo = 'PREGRADO' AND  fp.id_facultad != 9 and  case when notas.sumMaterias=0 then 0 else round(notas.sumMaterias/ plan.cantidad) end &gt;= 80
+        ORDER BY         f.facultad,  fp.programa
+    </select>
+    <select id="getListaMayoresa80" resultMap="datosPromedioNotas">
+        SELECT 
+        f.facultad, 
+        fp.programa, 
+        fp.id_programa, 
+        e.id_estudiante, 
+        e.id_plan,
+        case when get_anios_programa(fp.id_programa)=0 then plan.nivel/2 else plan.nivel end  as anios,
+        #gestion#-(g.gestion-1) as total_anios,
+        g.gestion,
+        p.paterno || ' '|| p.materno || ' '|| p.nombres as nombre_completo,
+        notas.sumMaterias,
+        plan.cantidad,
+        case when notas.sumMaterias=0 then 0 else round(notas.sumMaterias/ plan.cantidad) end as promedionota,
+        get_cantidad_reprobadas(e.id_estudiante) as cantidadreprobado
+        FROM 
+        facultades f inner join fcl_programas fp on f.id_facultad = fp.id_facultad
+        inner join estudiantes e on fp.id_programa = e.id_programa
+        inner join public.personas p on e.id_persona = p.id_persona
+        inner join public.matriculas m on e.id_estudiante = m.id_estudiante
+        inner join gestion g on e.id_estudiante = g.id_estudiante
+        inner join (SELECT id_programa,id_plan, count(id_materia) as cantidad,max(mp.nivel_academico) as nivel FROM public.mtr_planes mp WHERE  mp.id_estado = 'A' AND mp.id_materia=mp.id_materia_ant 
+        group by id_programa,id_plan) plan on e.id_programa=plan.id_programa and e.id_plan=plan.id_plan
+        inner join (
+        SELECT 
+        mp.id_programa,
+        n.id_estudiante,
+        mp.id_plan, 
+        sum(n.nota) as sumMaterias 
+        FROM materia_planes mp 
+        inner join notas n on mp.id_materia = n.id_materia 
+        WHERE n.id_estado IN ('A','C')
+        group by mp.id_programa, 
+        n.id_estudiante, mp.id_plan) notas on e.id_estudiante=notas.id_estudiante and e.id_plan=notas.id_plan
+        WHERE m.id_estado = 'A' AND m.gestion = #gestion# AND m.periodo=#periodo# AND f.codigo = 'PREGRADO' AND  fp.id_facultad != 9 and  case when notas.sumMaterias=0 then 0 else round(notas.sumMaterias/ plan.cantidad) end &gt;= 80
+        ORDER BY         f.facultad,  fp.programa
+    </select>
+</sqlMap>

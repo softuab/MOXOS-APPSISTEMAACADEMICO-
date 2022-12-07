@@ -1,0 +1,247 @@
+.h2-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0px;
+}
+.span-subtitle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+.escudo {
+    position: absolute;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    display: block;
+    bottom: 668.38px;
+    left: 36px;
+    width: 64.984px;
+    height: 87.624px;
+}
+.marca-agua {
+    position: absolute;
+    background-image: url(../..//imagenes/logos/logominiatura.png);
+    background-size: cover;
+    opacity: 0.2;
+    width: 500px;
+    height: 600px;
+    top: 100px;
+    left: 50px; 
+}
+.logo-escudo {
+    width: 70px;
+}
+.qr-document {
+    position: absolute;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    display: block;
+    left: 530px;
+    top: 40px;
+    width: 64.984px;
+    height: 87.624px;
+}
+.content-report {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    display: block;
+    top: 36px;
+    left: 36px;
+    width: 548px;
+    height: 100%;
+}
+.border {
+    border-style: double;
+    border-radius: 20px;
+    border-color: blue;
+}
+.hr {
+    border: 2px solid #000;
+}
+.left {
+    text-align: left;
+}
+.center {
+    text-align: center;
+}
+.bold {
+    font-weight: bold;
+}
+.right {
+    text-align: right;
+}
+.justify {
+    text-align: justify;
+}
+.upper{
+    text-transform: uppercase;
+}
+.th-title {
+    font-size: 10px;
+    padding: 2px 2px 2px 2px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+.font-10 {
+    font-size: 8px;
+}
+.aling-top{
+    vertical-align: text-top;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.border-row td {
+    border: 1px solid #ccc;
+}
+.btn {
+    align-items: center;
+    background-color: #0a66c2;
+    border: 0;
+    border-radius: 100px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
+        "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell,
+        "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 20px;
+    width: 100%;
+    overflow: hidden;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    touch-action: manipulation;
+    transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+        box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+        color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: #16437e;
+    color: #ffffff;
+}
+
+.btn:active {
+    background: #09223b;
+    color: rgb(255, 255, 255, 0.7);
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.3);
+}        
+.font-9 {
+    font-size: 8px;
+}
+@media print {
+    .noprint {
+        display: none;
+    }
+    .h2-title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 19pt;
+        text-align: center;
+        font-weight: bold;
+        margin: 0px;
+    }
+    .span-subtitle {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .escudo {
+        position: absolute;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        display: block;
+        top: 40pt;
+        left: 48pt;
+        width: 73.312pt;
+        height: 76.832pt;
+    }
+    .logo-escudo {
+        width: 60.5pt;
+    }
+    .qr-document {
+        position: absolute;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        display: block;
+        left: 700pt;
+        top: 40pt;
+        width: 64.984pt;
+        height: 76.624pt;
+    }
+    .content-report {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14pt;
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        display: block;
+        top: 145pt;
+        left: 36pt;
+        width: 740pt;
+        height: auto;
+    }
+
+    .marca-agua {
+        position: absolute;
+        background-image: url(../..//imagenes/logos/logominiatura.png);
+        background-size: cover;
+        opacity: 0.2;
+        width: 540pt;
+        height: 640pt;
+        top: 250pt;
+        left: 150pt; 
+    }
+    table {
+        width: 710pt;
+    }
+    .th-title {
+        font-size: 12pt;
+        padding: 2px 2px 2px 2px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+    }
+    .font-10 {
+        font-size: 10pt;
+    }
+    .font-9 {
+        font-size: 7pt;
+    }
+}
+.center-group{
+    align-items: center;
+    justify-content: center;
+}

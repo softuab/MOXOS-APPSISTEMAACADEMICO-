@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!--
+ * @autor FAUTAPO
+ * @fec_registro 2005-11-01
+ * @ult_usuario FAUTAPO
+ * @fec_modificacion 2005-11-01
+-->
+
+<sqlMap namespace="Calendarios">
+
+    <resultMap id="universidad" class="org.fautapo.domain.Calendarios">
+        <result property="id_universidad" column="id_universidad"/>
+        <result property="universidad"    column="universidad"/>
+    </resultMap>
+
+    <select id="getListarCalendarios" resultMap="universidad">
+        SELECT *
+        FROM mi_listar_calendario(#id_departamento#, #id_programa#, #tabla#, #gestion#, #periodo#);
+    </select>
+    <resultMap id="CalendarioDocente" class="org.fautapo.domain.Calendarios">
+        <result property="facultad" column="facultad"/>
+        <result property="programa"    column="programa"/>
+        <result property="tipo_evaluacion"    column="tipo_evaluacion"/>
+        <result property="tipo_nota"    column="tipo_nota"/>
+        <result property="nro_tipo_nota"    column="nro_tipo_nota"/>
+        <result property="fecha_inicio"    column="fecha_inicio"/>
+        <result property="fecha_limite"    column="fecha_limite"/>
+        <result property="gestion"    column="gestion"/>
+        <result property="periodo"    column="periodo"/>
+    </resultMap>
+    <select id="getlistarCalendarioDocente" resultMap="CalendarioDocente">
+        select * from 
+        get_listar_Calendario_Docente(#id_docente#,#gestion#, #periodo#)
+        as (facultad dtexto,programa dtexto,tipo_evaluacion dtexto,tipo_nota dtexto,nro_tipo_nota dentero,fecha_inicio dfecha2,fecha_limite dfecha2,gestion dentero,periodo dentero)
+    </select>
+    <resultMap id="CalendarioAcademico" class="org.fautapo.domain.Calendarios">
+        <result property="id_control_calendario_actividad" column="id_control_calendario_actividad"/>
+        <result property="actividad"    column="actividad"/>
+        <result property="detalle"    column="detalle"/>
+        <result property="gestion"    column="gestion"/>
+        <result property="periodo"    column="periodo"/>
+        <result property="fec_inicio_calendario"    column="fec_inicio_calendario"/>
+        <result property="fec_final"    column="fec_final"/>
+        <result property="nro_resolucion"    column="nro_resolucion"/> 
+    </resultMap>
+    <select id="getDetalleCalendarioAcademico" resultMap="CalendarioAcademico">
+        SELECT 
+        cca.id_control_calendario_actividad, 
+        cca.actividad,  
+        ccaa.detalle,
+        cdca.gestion,
+        cdca.periodo,
+        cdca.fec_inicio as fec_inicio_calendario,
+        cdca.fec_final,
+        nro_resolucion
+        FROM
+        control_detalle_calendario_academico cdca INNER JOIN control_calendario_actividad cca ON cca.id_control_calendario_actividad=cdca.id_control_calendario_actividad INNER JOIN control_calendario_academico ccaa on ccaa.id_control_calendario_academico=cdca.id_control_calendario_academico
+        where cdca.gestion=#gestion# AND cdca.periodo=#periodo# and cca.id_control_calendario_actividad=#id_control_calendario_actividad#
+        limit 1
+    </select>
+</sqlMap>

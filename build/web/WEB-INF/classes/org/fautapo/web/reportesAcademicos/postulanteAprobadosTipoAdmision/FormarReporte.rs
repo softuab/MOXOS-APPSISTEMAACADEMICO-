@@ -1,0 +1,1 @@
+org.fautapo.web.reportesAcademicos.postulantesAprobadosTipoAdmision.FormarReporte

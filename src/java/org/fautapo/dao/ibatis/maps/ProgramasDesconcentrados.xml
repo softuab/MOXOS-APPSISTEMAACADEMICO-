@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProgramasDesconcetrados">
+    <resultMap id="idListaDesconcentrados" class="org.fautapo.domain.ProgramasDesconcentrados">
+        <result property="id_desconcentrado" column="id_desconcentrado"/>
+        <result property="sede_desconcentrada" column="sede_desconcentrada"/>
+        <result property="id_programa" column="id_programa"/>
+    </resultMap>
+    <select id="getListarProgramasDesconcentrados" resultMap="idListaDesconcentrados">
+        SELECT id_desconcentrado, sede_desconcentrada,id_programa 
+        FROM  fcl_programas_desconcentrados 
+    </select>
+</sqlMap>
+

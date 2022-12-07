@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <bean id="propertyConfigurer" 
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" 
+          p:location="/WEB-INF/jdbc.properties" />
+    <bean id="emailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="25"/>
+        <property name="username" value="soporte@uabjb.edu.bo"/>
+        <property name="password" value="sismokey2019.-$"/>
+        <property name="javaMailProperties">
+            <props>
+                <!-- Use SMTP transport protocol -->
+                <prop key="mail.transport.protocol" >smtp</prop>
+                <!-- Use SMTP-AUTH to authenticate to SMTP server -->
+                <prop key="mail.smtp.auth">true</prop>
+                <!-- Use TLS to encrypt communication with SMTP server -->
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">false</prop>
+                <prop key="mail.smtp.ssl.enable">false</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="emailservice" class="org.fautapo.service.EmailService">
+        <property name="emailSender" ref="emailSender"/>
+    </bean>
+    <bean id="multiThreadedHttpConnectionManager"
+          class="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager">
+        <property name="params">
+            <bean
+                class="org.apache.commons.httpclient.params.HttpConnectionManagerParams">
+                <property name="maxTotalConnections" value="${maxTotalConnections:300}" />
+                <property name="defaultMaxConnectionsPerHost" value="${defaultMaxConnectionsPerHost:300}" />
+                <!-- Connection timeout, milliseconds. -->
+                <property name="connectionTimeout" value="${connectTimeout:600000}" />
+                <!-- socket Timeout, milliseconds. -->
+                <property name="soTimeout" value="${readTimeout:600000}" />
+                <property name="staleCheckingEnabled" value="${staleCheckingEnabled:true}" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="httpClient" class="org.apache.commons.httpclient.HttpClient">
+        <constructor-arg>
+            <ref bean="multiThreadedHttpConnectionManager" />
+        </constructor-arg>
+    </bean>
+    <bean id="baseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+          abstract="true">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="insert*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mi" parent="baseTransactionProxy">
+        <property name="target">
+            <bean class="org.fautapo.domain.logic.MiImpl">
+                <property name="abmDao"          ref="abmDao"/>
+                <property name="clientesDao"     ref="clientesDao"/>
+                <property name="usuariosDao"     ref="usuariosDao"/>
+                <property name="rolesDao"        ref="rolesDao"/>
+                <property name="enlacesDao"      ref="enlacesDao"/>
+                <property name="categoriasDao"   ref="categoriasDao"/>
+                <property name="herramientasDao" ref="herramientasDao"/>
+                <property name="actividadesDao"  ref="actividadesDao"/>
+                <property name="dominiosDao"     ref="dominiosDao"/>
+                <property name="camposDao"       ref="camposDao"/>
+                <property name="informesDao"     ref="informesDao"/>
+                <property name="gwDao"           ref="gwDao"/>
+                <property name="tramitesDao"     ref="tramitesDao"/>
+                <property name="personasDao"     ref="personasDao"/>
+                <property name="proveidosDao"    ref="proveidosDao"/>
+                <property name="adjuntosDao"     ref="adjuntosDao"/>
+                <property name="tablerosDao"     ref="tablerosDao"/>
+                <property name="hilosDao"        ref="hilosDao"/>
+                <property name="dibwaykaDao"     ref="dibwaykaDao"/>
+                <property name="horariosDao"      ref="horariosDao"/>
+                <property name="planesDao"        ref="planesDao"/>
+                <property name="programasDao"     ref="programasDao"/>
+                <property name="departamentosDao" ref="departamentosDao"/>
+                <property name="facultadesDao"    ref="facultadesDao"/>
+                <property name="universidadesDao" ref="universidadesDao"/>
+                <property name="notasDao"         ref="notasDao"/>
+                <property name="materiasDao"      ref="materiasDao"/>
+                <property name="libretasDao"      ref="libretasDao"/>
+                <property name="docentesDao"      ref="docentesDao"/>
+                <property name="asignacionesDao"  ref="asignacionesDao"/>
+                <property name="estudiantesDao"   ref="estudiantesDao"/>
+                <property name="gruposDao"        ref="gruposDao"/>
+                <property name="postulantesDao"   ref="postulantesDao"/>
+                <property name="perfilesDao"      ref="perfilesDao"/>
+                <property name="curriculumDao"    ref="curriculumDao"/>
+                <property name="calendariosDao"   ref="calendariosDao"/>
+                <property name="programadesconcentradoDao"   ref="programadesconcentradoDao"/>
+            </bean>
+        </property>
+    </bean>
+</beans>
